@@ -1,0 +1,150 @@
+{
+  "dns": {
+    "servers": [
+      {
+        "address": "https://gwa.radical-dns.ru/dns/yUBTKLNnS1E3uuFU/dns-query",
+        "skipFallback": true
+      }
+    ],
+    "queryStrategy": "UseIPv4",
+    "disableFallback": true,
+    "disableFallbackIfMatch": true,
+    "hosts": {
+      "gwa.radical-dns.ru": "85.192.24.33"
+    }
+  },
+  "routing": {
+    "rules": [
+      {
+        "type": "field",
+        "domain": [
+          "geosite:category-porn",
+          "domain:instagram.com",
+          "domain:cdninstagram.com",
+          "domain:discord.com",
+          "domain:discord.gg",
+          "domain:discordapp.com",
+          "domain:discordapp.net",
+          "domain:discord.media",
+          "domain:discordcdn.com",
+          "domain:fbcdn.net"
+        ],
+        "outboundTag": "block"
+      },
+      {
+        "type": "field",
+        "domain": [
+          "geosite:yandex",
+          "geosite:vk",
+          "geosite:category-gov-ru",
+          "domain:mail.ru",
+          "domain:ok.ru",
+          "domain:ozon.ru",
+          "domain:wildberries.ru",
+          "domain:avito.ru",
+          "domain:gosuslugi.ru"
+        ],
+        "outboundTag": "direct"
+      },
+      {
+        "type": "field",
+        "protocol": [
+          "bittorrent"
+        ],
+        "outboundTag": "block"
+      }
+    ],
+    "domainMatcher": "hybrid",
+    "domainStrategy": "IPIfNonMatch"
+  },
+  "inbounds": [
+    {
+      "tag": "socks",
+      "port": 10808,
+      "listen": "127.0.0.1",
+      "protocol": "socks",
+      "settings": {
+        "udp": true,
+        "auth": "noauth"
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ],
+        "metadataOnly": false,
+        "routeOnly": false
+      }
+    },
+    {
+      "tag": "http",
+      "port": 10809,
+      "listen": "127.0.0.1",
+      "protocol": "http",
+      "settings": {
+        "allowTransparent": false
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ],
+        "metadataOnly": false,
+        "routeOnly": false
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "proxy",
+      "protocol": "vless",
+      "settings": {
+        "vnext": [
+          {
+            "address": "5.129.223.22",
+            "port": 10003,
+            "users": [
+              {
+                "id": "a0edf999-e05f-4e5d-b5bb-2fc658316082",
+                "encryption": "none",
+                "flow": ""
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "wsSettings": {
+          "path": "/radical-primary-v1",
+          "host": "",
+          "headers": {}
+        },
+        "security": "tls",
+        "tlsSettings": {
+          "serverName": "octave.muzhik-v-ochkah.ru",
+          "fingerprint": "chrome",
+          "alpn": [
+            "http/1.1"
+          ]
+        }
+      }
+    },
+    {
+      "tag": "direct",
+      "protocol": "freedom"
+    },
+    {
+      "tag": "block",
+      "protocol": "blackhole"
+    }
+  ],
+  "remarks": "──── 🔥ДЛЯ БРАВЛИКА🔥 ────",
+  "meta": {
+    "serverDescription": "Москва → Европа · VLESS WS TLS"
+  }
+}
